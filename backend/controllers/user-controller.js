@@ -5,6 +5,7 @@ const getAllUser = async (req, res) => {
   console.log("Data", data);
   res.status(200).json({ message: "Success", user: data });
 };
+
 const createUser = async (req, res) => {
   const { email, name, password, profile_img } = req.body;
   const data = await sql`
@@ -12,14 +13,23 @@ const createUser = async (req, res) => {
     VALUES(${email}, ${name}, ${password},${profile_img});
     `;
   console.log("DATA", data);
-  res.status(201).json({ message: "New use created successfully" });
+  res.status(201).json({ message: "New user created successfully" });
 };
-const updateUser = () => {};
+
+const updateUser = async (req, res) => {
+  const { email, name, password, profile_img } = req.body;
+  const { id } = req.params;
+  const data =
+    await sql`UPDATE users SET email=${email}, name=${name}, password=${password}, profile_img=${profile_img} WHERE id=${id}`;
+  console.log("DATA", data);
+  res.status(200).json({ message: "Update user success", user: data });
+};
+
 const deleteUser = async (req, res) => {
   const { id } = req.params;
-  const data = await sql`DELETE FROM users WHERE eid=${id}`;
+  const data = await sql`DELETE FROM users WHERE id=${id}`;
   console.log("DATA", data);
-  res.status(200).json({ message: "Delete success", user: data });
+  res.status(200).json({ message: "Delete user success", user: data });
 };
 
 module.exports = { getAllUser, createUser, updateUser, deleteUser };
