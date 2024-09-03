@@ -1,6 +1,39 @@
-import React from "react";
+"use client";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import Link from "next/link";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { apiUrl } from "@/app/utils/util";
 
 const Login = () => {
+  const router = useRouter();
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const logIn = async () => {
+    const { email, password } = userData;
+
+    try {
+      const response = await axios.post(`${apiUrl}/auth/signin`, {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        toast.success("User successfully signed in", { autoClose: 1000 });
+        const { token } = response.data;
+        localStorage.setItem("token", token);
+
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("There was an error signing in:", error);
+      toast.error("Failed to sign in. Please try again.");
+    }
+  };
   return (
     <section className="w-screen h-screen bg-[#0166FF]">
       <div className="w-1/2 bg-white h-full flex items-center justify-center">
@@ -31,9 +64,11 @@ const Login = () => {
           </div>
           <div className="flex flex-row items-center">
             <p className="text-base text-[#0F172A]">Don’t have account?</p>
-            <p className="btn text-base text-[#0166FF] bg-white border-0 shadow-none">
-              Sign up
-            </p>
+            <Link href="/signup">
+              <p className="btn text-base text-[#0166FF] bg-white border-0 shadow-none">
+                Sign up
+              </p>
+            </Link>
           </div>
         </div>
       </div>
