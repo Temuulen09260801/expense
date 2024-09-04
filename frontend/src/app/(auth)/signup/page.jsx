@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { apiUrl } from "@/app/utils/util";
 
 const SignUp = () => {
   const router = useRouter();
@@ -61,21 +62,37 @@ const SignUp = () => {
             <input
               type="text"
               placeholder="Name"
+              value={userData.name}
+              onChange={(e) =>
+                setUserData({ ...userData, name: e.target.value })
+              }
               className="input input-bordered w-full border-[1px] border-[#D1D5DB] bg-[#F3F4F6] px-4 py-3 text-base text-[#A3A3A3]"
             />
             <input
               type="email"
               placeholder="Email"
+              value={userData.email}
+              onChange={(e) =>
+                setUserData({ ...userData, email: e.target.value })
+              }
               className="input input-bordered w-full border-[1px] border-[#D1D5DB] bg-[#F3F4F6] px-4 py-3 text-base text-[#A3A3A3]"
             />
             <input
-              type="text"
+              type="password"
               placeholder="Password"
+              value={userData.password}
+              onChange={(e) =>
+                setUserData({ ...userData, password: e.target.value })
+              }
               className="input input-bordered w-full border-[1px] border-[#D1D5DB] bg-[#F3F4F6] px-4 py-3 text-base text-[#A3A3A3]"
             />
             <input
-              type="text"
+              type="password"
               placeholder="Re-password"
+              value={userData.repassword}
+              onChange={(e) =>
+                setUserData({ ...userData, repassword: e.target.value })
+              }
               className="input input-bordered w-full border-[1px] border-[#D1D5DB] bg-[#F3F4F6] px-4 py-3 text-base text-[#A3A3A3]"
             />
             <button

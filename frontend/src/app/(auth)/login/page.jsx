@@ -31,7 +31,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error("There was an error signing in:", error);
-      toast.error("Failed to sign in. Please try again.");
+      toast.error("Нэвтрэх нэр эсвэл нууц үг буруу байна.");
     }
   };
   return (
@@ -52,13 +52,22 @@ const Login = () => {
               type="email"
               placeholder="Email"
               className="input input-bordered w-full border-[1px] border-[#D1D5DB] bg-[#F3F4F6] px-4 py-3 text-base text-[#A3A3A3]"
+              onChange={(e) =>
+                setUserData({ ...userData, email: e.target.value })
+              }
             />
             <input
-              type="text"
+              type="password"
               placeholder="Password"
               className="input input-bordered w-full border-[1px] border-[#D1D5DB] bg-[#F3F4F6] px-4 py-3 text-base text-[#A3A3A3]"
+              onChange={(e) =>
+                setUserData({ ...userData, password: e.target.value })
+              }
             />
-            <button className="btn btn-info bg-[#0166FF] rounded-[20px] py-[10px] border-0 text-xl text-white font-normal">
+            <button
+              className="btn btn-info bg-[#0166FF] rounded-[20px] py-[10px] border-0 text-xl text-white font-normal"
+              onClick={logIn}
+            >
               Log in
             </button>
           </div>
