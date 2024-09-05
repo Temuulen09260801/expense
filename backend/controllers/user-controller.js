@@ -6,6 +6,13 @@ const getAllUser = async (req, res) => {
   res.status(200).json({ message: "Success", user: data });
 };
 
+const getCurrentUser = async (req, res) => {
+  console.log(req);
+  const [data] = await sql`SELECT * FROM users WHERE id=${req.user.id}`;
+  console.log("Data", data);
+  res.status(200).json({ message: "Success", user: data });
+};
+
 const createUser = async (req, res) => {
   const { email, name, password, profile_img } = req.body;
   const data = await sql`
@@ -32,4 +39,10 @@ const deleteUser = async (req, res) => {
   res.status(200).json({ message: "Delete user success", user: data });
 };
 
-module.exports = { getAllUser, createUser, updateUser, deleteUser };
+module.exports = {
+  getAllUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  getCurrentUser,
+};
