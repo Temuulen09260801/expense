@@ -2,14 +2,14 @@
 
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/user-context";
-import { useRouter } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 import { Header } from "../components";
 import axios from "axios";
 import { apiUrl } from "../utils/util";
 
 const Layout = ({ children }) => {
   const { user, fetchUserData } = useContext(UserContext);
-  // const router = useRouter();
+  const router = useRouter();
   // const [user, setUser] = useState(null);
   // const getData = async () => {
   //   const res = await axios.get("http://localhost:8008/users/profile", {
@@ -31,6 +31,10 @@ const Layout = ({ children }) => {
     localStorage.removeItem("token");
     router.push("/login");
   };
+
+  // if (!user) {
+  //   redirect("/login");
+  // }
 
   return (
     <div>

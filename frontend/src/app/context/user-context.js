@@ -7,12 +7,7 @@ import { apiUrl } from "../utils/util";
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    userId: "",
-    name: "",
-    email: "",
-    profile_img: "",
-  });
+  const [user, setUser] = useState(null);
 
   const fetchUserData = async () => {
     try {
@@ -24,8 +19,8 @@ export const UserProvider = ({ children }) => {
       });
 
       if (response.status === 200) {
-        setUser(response.data);
-        console.log("USER", response.data);
+        setUser(response.data.user);
+        console.log("USER", response.data.user);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);

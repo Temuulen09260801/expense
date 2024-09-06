@@ -5,31 +5,33 @@ import Link from "next/link";
 
 export const Header = ({ user, logOut }) => {
   return (
-    <header className="flex items-center max-w-[2000px] mx-auto justify-between py-4">
-      <div className="flex gap-6 items-center">
-        <Image src="/img/vector.png" width={20} height={20} alt="logo" />
-        <p className="uppercase font-bold">{user?.user?.name}</p>
-        <Link href="/dashboard">
-          <p className="text-base text-[#0F172A]">Dashboard</p>
-        </Link>
-        <Link href="/records">
-          <p className="text-base text-[#0F172A]">Records</p>
-        </Link>
-      </div>
-      <div className="flex gap-6 items-center">
-        <button className="btn bg-[#0166FF] text-white btn-sm text-base">
-          {/* <PlusIcon /> */}
-          <FaPlus />
-          Records
-        </button>
-        <div className="avatar w-12 h-12">
-          <div className="w-24 rounded-full">
-            <img src={user?.user?.avatarImg} />
-          </div>
+    <header className="bg-white">
+      <div className="flex items-center max-w-[2000px] mx-auto justify-between py-4 bg-white">
+        <div className="flex gap-6 items-center">
+          <Image src="/img/vector.png" width={20} height={20} alt="logo" />
+          <p className="uppercase font-bold">{user?.name}</p>
+          <Link href="/dashboard">
+            <p className="text-base text-[#0F172A]">Dashboard</p>
+          </Link>
+          <Link href="/records">
+            <p className="text-base text-[#0F172A]">Records</p>
+          </Link>
         </div>
-        <button className="btn btn-sm" onClick={logOut}>
-          Log out
-        </button>
+        <div className="flex gap-6 items-center">
+          <button className="btn bg-[#0166FF] text-white btn-sm text-base">
+            {/* <PlusIcon /> */}
+            <FaPlus />
+            Records
+          </button>
+          <div className="avatar w-12 h-12">
+            <div className="w-24 rounded-full">
+              <img src={user?.avatarImg} />
+            </div>
+          </div>
+          <button className="btn btn-sm" onClick={logOut}>
+            Log out
+          </button>
+        </div>
       </div>
     </header>
   );
