@@ -4,7 +4,7 @@ const getAllRecord = async (req, res) => {
   try {
     const records = await sql`SELECT * FROM records`;
     console.log("Data", records);
-    res.status(200).json({ message: "Success", record: records });
+    res.status(200).json({ records });
   } catch (error) {
     res.status(400).json({ message: "Failed", error });
   }
@@ -14,7 +14,6 @@ const getInfo = async (req, res) => {
   try {
     const [income, expense] =
       await sql`SELECT transaction_type, SUM(amount) FROM records GROUP BY transaction_type`;
-    console.log("Data", info);
     res.status(200).json({ income, expense });
   } catch (error) {
     res.status(400).json({ message: "Failed", error });

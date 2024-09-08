@@ -9,19 +9,42 @@ import { HiSignal } from "react-icons/hi2";
 import { GoDotFill } from "react-icons/go";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import { FaCircleArrowDown } from "react-icons/fa6";
+import AddRecord from "@/app/components/addRecord";
+
+// Doughnut
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+
+import { Doughnut } from "react-chartjs-2";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+// Doughnut end
 
 const Dashboard = () => {
-  // const { user, fetchUserData } = useContext(UserContext);
   const { user } = useContext(UserContext);
-  const [transactionData, setTransactionData] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const [cardInfo, setCardInfo] = useState(null);
+
+  // Doughnut
+  const data = {
+    label: ["Yes", "No"],
+    datasets: [
+      {
+        label: "Poll",
+        data: [3, 6],
+        backgroundColor: ["black", "red"],
+        borderColor: ["black", "red"],
+      },
+    ],
+  };
+
+  const options = {};
+  // Doughnut end
 
   const fetchTransactions = async () => {
     try {
-      const res = await axios.get(`${apiUrl}/records/`);
-      console.log("res data", res);
+      const res = await axios.get(`${apiUrl}/records`);
       console.log("DD", res.data.records);
-      setTransactionData(res.data.records);
+      setTransactions(res.data.records);
     } catch (error) {
       console.error(error);
       toast.error("Failed to fetch transactions");
@@ -31,7 +54,6 @@ const Dashboard = () => {
   const getInfoCardData = async () => {
     try {
       const res = await axios.get(`${apiUrl}/records/info`);
-      console.log("res data", res);
       console.log("ST", res.data);
       setCardInfo(res.data);
     } catch (error) {
@@ -40,19 +62,16 @@ const Dashboard = () => {
     }
   };
 
-  console.log("trans data", transactionData);
+  console.log("trans data", transactions);
 
   useEffect(() => {
-    if (user && user?.id) {
-      fetchTransactions();
-      getInfoCardData;
-    }
-  }, [user?.id]);
+    fetchTransactions();
+    getInfoCardData();
+  }, [user]);
 
   return (
     <div>
       <div className="max-w-[2000px] mx-auto  mt-8">
-        <h1>{user?.name}</h1>
         {/*  */}
         <div className="w-full flex justify-between h-[240px]">
           <div className="bg-[#0166FF] w-[600px] h-full rounded-[18px] p-8 flex justify-between">
@@ -60,9 +79,7 @@ const Dashboard = () => {
               <img src="/img/Geld-white.png" alt="photo" className="w-20" />
               <div>
                 <p className="text-base text-white opacity-50">Cash</p>
-                <p className="text-2xl font-semibold text-white">
-                  {transactionData?.amount}
-                </p>
+                <p className="text-2xl font-semibold text-white">1000</p>
               </div>
             </div>
             <HiSignal size={40} color="white" />
@@ -74,7 +91,7 @@ const Dashboard = () => {
             </div>
             <div className="py-5 px-6">
               <h3 className="text-4xl font-semibold">
-                {cardInfo?.income.sum}T
+                {cardInfo?.income.sum}₮
               </h3>
               <p className="text-[18px] text-[#64748B] mt-1">
                 Your Income Amount
@@ -92,7 +109,7 @@ const Dashboard = () => {
             </div>
             <div className="py-5 px-6">
               <h3 className="text-4xl font-semibold">
-                {cardInfo?.expense.sum}T
+                -{cardInfo?.expense.sum}₮
               </h3>
               <p className="text-[18px] text-[#64748B] mt-1">
                 Your expence Amount
@@ -105,26 +122,42 @@ const Dashboard = () => {
           </div>
         </div>
         {/*  */}
-        <div>
-          <div></div>
-          <div></div>
+        <div className="flex mt-6 gap-6">
+          <div className="w-1/2 rounded-xl">
+            <div className="border-b-[1px] border-[#E2E8F0] bg-white px-4 py-6 text-base font-semibold rounded-t-xl">
+              Income - Expense
+            </div>
+            <div className=" h-[284px] bg-white px-6 py-8 rounded-b-xl">
+              <Doughnut data={data} options={options}></Doughnut>
+            </div>
+          </div>
+          <div className="w-1/2 rounded-xl">
+            <div className="border-b-[1px] border-[#E2E8F0] bg-white px-4 py-6 text-base font-semibold rounded-t-xl">
+              Income - Expense
+            </div>
+            <div className=" h-[284px] bg-white px-6 py-8 rounded-b-xl">
+              <Doughnut data={data} options={options}></Doughnut>
+            </div>
+          </div>
         </div>
         {/*  */}
-        <div></div>
+        <div className="border-b-[1px] border-[#E2E8F0] bg-white px-4 py-6 mt-6 text-base font-semibold rounded-t-xl">
+          Last records
+        </div>
         {/* GUILGEENII JAGSAALT */}
-        {transactionData?.transactions?.map((transaction, index) => {
-          // return (
-          //   // <div key={index} className="flex">
-          //   //   <img src="/income.svg" alt="income" />
-          //   //   <div>
-          //   //     <p className="mb-1">{transaction?.name}</p>
-          //   //     <p className="text-[#6B7280]">{transaction?.createdat}</p>
-          //   //   </div>
-          //   // </div>
-          //   div
-          // );
-          <div>[tr.name]</div>;
-        })}
+        {transactions?.map((tr) => (
+          <div className="flex justify-between items-center px-6 py-5 border-b-[1px] border-[#E5E7EB] bg-white">
+            <div className="flex gap-4">
+              <img src="/img/home.svg" alt="income" />
+              <div>
+                <p className="text-base">{tr?.name}</p>
+                <p className="text-xs text-[#6B7280]">{tr?.created_at}</p>
+              </div>
+            </div>
+            <div>{tr?.amount}₮</div>
+          </div>
+        ))}
+        {/* <AddRecord /> */}
       </div>
     </div>
   );

@@ -33,7 +33,8 @@ const Layout = ({ children }) => {
   };
 
   // if (!user) {
-  //   redirect("/login");
+  //   // redirect("/login");
+  //   router.push("/login");
   // }
 
   return (

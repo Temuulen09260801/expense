@@ -2,6 +2,7 @@
 import { FaPlus } from "react-icons/fa6";
 import Image from "next/image";
 import Link from "next/link";
+import AddRecord from "./addRecord";
 
 export const Header = ({ user, logOut }) => {
   return (
@@ -18,11 +19,15 @@ export const Header = ({ user, logOut }) => {
           </Link>
         </div>
         <div className="flex gap-6 items-center">
-          <button className="btn bg-[#0166FF] text-white btn-sm text-base">
+          <button
+            className="btn bg-[#0166FF] text-white btn-sm text-base"
+            onClick={() => document.getElementById("my_modal_3").showModal()}
+          >
             {/* <PlusIcon /> */}
             <FaPlus />
             Records
           </button>
+          <AddRecord />
           <div className="avatar w-12 h-12">
             <div className="w-24 rounded-full">
               <img src={user?.avatarImg} />
