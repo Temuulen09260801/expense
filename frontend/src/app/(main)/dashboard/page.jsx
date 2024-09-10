@@ -10,35 +10,25 @@ import { GoDotFill } from "react-icons/go";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import { FaCircleArrowDown } from "react-icons/fa6";
 import AddRecord from "@/app/components/addRecord";
+import BarChart from "@/app/components/dashboard/BarChart";
 
-// Doughnut
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-
+import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart,
+  Legend,
+  LinearScale,
+} from "chart.js";
+import DoughnutChart from "@/app/components/dashboard/Doughnut";
 import { Doughnut } from "react-chartjs-2";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
-// Doughnut end
+import RecordList from "@/app/components/recordList";
+Chart.register(CategoryScale, LinearScale, BarElement, ArcElement, Legend);
 
 const Dashboard = () => {
   const { user } = useContext(UserContext);
   const [transactions, setTransactions] = useState([]);
   const [cardInfo, setCardInfo] = useState(null);
-
-  // Doughnut
-  const data = {
-    label: ["Yes", "No"],
-    datasets: [
-      {
-        label: "Poll",
-        data: [3, 6],
-        backgroundColor: ["black", "red"],
-        borderColor: ["black", "red"],
-      },
-    ],
-  };
-
-  const options = {};
-  // Doughnut end
 
   const fetchTransactions = async () => {
     try {
@@ -128,7 +118,7 @@ const Dashboard = () => {
               Income - Expense
             </div>
             <div className=" h-[284px] bg-white px-6 py-8 rounded-b-xl">
-              <Doughnut data={data} options={options}></Doughnut>
+              <BarChart />
             </div>
           </div>
           <div className="w-1/2 rounded-xl">
@@ -136,7 +126,7 @@ const Dashboard = () => {
               Income - Expense
             </div>
             <div className=" h-[284px] bg-white px-6 py-8 rounded-b-xl">
-              <Doughnut data={data} options={options}></Doughnut>
+              <DoughnutChart />
             </div>
           </div>
         </div>
@@ -145,18 +135,7 @@ const Dashboard = () => {
           Last records
         </div>
         {/* GUILGEENII JAGSAALT */}
-        {transactions?.map((tr) => (
-          <div className="flex justify-between items-center px-6 py-5 border-b-[1px] border-[#E5E7EB] bg-white">
-            <div className="flex gap-4">
-              <img src="/img/home.svg" alt="income" />
-              <div>
-                <p className="text-base">{tr?.name}</p>
-                <p className="text-xs text-[#6B7280]">{tr?.created_at}</p>
-              </div>
-            </div>
-            <div>{tr?.amount}₮</div>
-          </div>
-        ))}
+        <RecordList />
         {/* <AddRecord /> */}
       </div>
     </div>
