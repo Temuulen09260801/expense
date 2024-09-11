@@ -1,18 +1,36 @@
+import { apiUrl } from "@/app/utils/util";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 
-const BarChart = ({ barChartData }) => {
+const BarChart = ({}) => {
+  const [barChartInfo, setBarChartInfo] = useState(null);
+  const getBarChartData = async () => {
+    try {
+      const res = await axios.get(`${apiUrl}/records/chart`);
+      setBarChartInfo(res.data);
+    } catch (error) {
+      toast.error("failed");
+    }
+  };
+  useEffect(() => {
+    getBarChartData();
+  }, []);
+  const lbl = barChartInfo?.bar.map((b) => b.sar);
+  const exp = barChartInfo?.bar.map((b) => b.total_exp);
+  const inc = barChartInfo?.bar.map((b) => b.total_inc);
   const data1 = {
-    labels: ["Jan"],
+    labels: lbl,
     datasets: [
       {
         label: "Income",
         backgroundColor: "#22C55E",
-        data: [20_000],
+        data: inc,
       },
       {
         label: "Expense",
         backgroundColor: "#F87171",
-        data: [15_000],
+        data: exp,
       },
     ],
   };

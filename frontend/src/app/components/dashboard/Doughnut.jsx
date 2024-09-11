@@ -1,10 +1,28 @@
+import { apiUrl } from "@/app/utils/util";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 
-const DoughnutChart = ({ categoryData }) => {
+const DoughnutChart = ({}) => {
+  const [donChartInfo, setDonChartInfo] = useState(null);
+  const getDonChartData = async () => {
+    try {
+      const res = await axios.get(`${apiUrl}/records/chart`);
+      setDonChartInfo(res.data);
+    } catch (error) {
+      toast.error("failed");
+    }
+  };
+  useEffect(() => {
+    getDonChartData();
+  }, []);
+  const lbl = donChartInfo?.donut.map((d) => d.cat_name);
+  const cost = donChartInfo?.donut.map((d) => d.sum);
+
   const data2 = {
     datasets: [
       {
-        data: [10, 10, 20, 40, 20],
+        data: cost,
 
         backgroundColor: [
           "#1C64F2",
@@ -22,7 +40,7 @@ const DoughnutChart = ({ categoryData }) => {
         ],
       },
     ],
-    labels: ["Food", "Tech", "Taxi", "Health", "Car"],
+    labels: lbl,
   };
 
   const options2 = {
