@@ -21,6 +21,10 @@ app.use("/users", userRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/records", recordRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Welcome Express tracker API");
+});
+
 app.listen(PORT, () => {
   console.log(`Сервер localhost:${PORT} дээр аслаа`);
 });
